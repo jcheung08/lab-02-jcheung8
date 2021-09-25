@@ -312,6 +312,10 @@ int parse_request( char* http_request ) {
 
   // GET Request
   if (return_value == 0) {
+    if (strlen(http_request) < 4) {
+      request_keys[0] = "\0";
+      request_values[0] = "\0";
+    }
     for (int i = 0; i < strlen(http_request) - 6; i++) {
         character = http_request[i + 6];
         if (character == ' ') {
@@ -354,8 +358,11 @@ int parse_request( char* http_request ) {
           break;
         }
   }
-
   if (return_value == 1) {
+    if (strlen(http_request) < 5) {
+      request_keys[0] = "\0";
+      request_values[0] = "\0";
+    }
     for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
         character = http_request[i + twoPairs];
         if (character == ' ') {
