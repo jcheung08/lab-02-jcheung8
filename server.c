@@ -284,22 +284,6 @@ void accept_client( int client_socket_fd ) {
 //        1 (POST): Method field is POST (see #define)
 //         -1 (FAIL): Method field is not GET or POST (see #define)
 //
-int main() {
-  //parse_request("GET first=joseph&last=cheung");
-  //parse_request()
-  allocate_data_arrays();
-  parse_request("GET first=joseph&last=cheung");
-    /*request_keys[0][0] = 'j';
-    request_keys[0][1] = 'o';
-    request_keys[0][2] = 'e';
-    request_keys[1][0] = 'c';
-    request_keys[1][1] = 'h';
-    request_keys[1][2] = 'e';
-    request_keys[1][3] = 'u';
-    request_keys[1][4] = 'n';
-    request_keys[1][5] = 'g';*/
-  return 0;
-}
 
 int parse_request( char* http_request ) {
   int return_value = -1;
