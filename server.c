@@ -285,6 +285,10 @@ void accept_client( int client_socket_fd ) {
 int parse_request( char* http_request ) {
   allocate_data_arrays();
   int return_value = -1;
+
+  if (strlen(http_request) == 0) {
+     return -1;
+  }
   for (int i = 0; i < strlen(http_request); i++) {
     if (http_request[i] == '&') {
       number_key_value_pairs++;
@@ -293,9 +297,9 @@ int parse_request( char* http_request ) {
   number_key_value_pairs++;
 
   char character;
-  if (http_request[0] == 'G' || http_request[0] == 'g') {
+  if (http_request[0] == 'G' && http_request[1] == 'E' && http_request[2] == 'T') {
     return_value = 0;
-  } else if (http_request[0] == 'P' || http_request[0] =='p') {
+  } else if (http_request[0] == 'P' && http_request[1] == 'O' && http_request[2] == 'S' && http_request[3] =='T') {
     return_value = 1;
   } else {
     return return_value;
@@ -315,6 +319,8 @@ int parse_request( char* http_request ) {
         } else if (character == '\n') {
           break;
         } else if (character == '\r') {
+          break;
+        } else if (character == '\0') {
           break;
         }
         if (boo) {
@@ -357,6 +363,8 @@ int parse_request( char* http_request ) {
         } else if (character == '\n') {
           break;
         } else if (character == '\r') {
+          break;
+        } else if (character == '\0') {
           break;
         }
         if (boo) {
