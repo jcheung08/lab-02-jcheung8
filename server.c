@@ -285,7 +285,6 @@ void accept_client( int client_socket_fd ) {
 int parse_request( char* http_request ) {
   allocate_data_arrays();
   int return_value = -1;
-
   for (int i = 0; i < strlen(http_request); i++) {
     if (http_request[i] == '&') {
       number_key_value_pairs++;
@@ -298,6 +297,8 @@ int parse_request( char* http_request ) {
     return_value = 0;
   } else if (http_request[0] == 'P' || http_request[0] =='p') {
     return_value = 1;
+  } else {
+    return return_value;
   }
   int r1 = 0;
   int c1 = 0;
@@ -347,8 +348,8 @@ int parse_request( char* http_request ) {
   int index = 0;
   if (return_value == 1) {
     if (strlen(http_request) == 0) {
-      request_keys = NULL;
-      request_values = NULL;
+      //request_keys = NULL;
+      //request_values = NULL;
       return return_value;
     }
     for (int p = 0; p < strlen(http_request); p++) {
