@@ -279,7 +279,7 @@ void accept_client( int client_socket_fd ) {
 //
 //int main() {
   //parse_request("GET /?first=joseph&last=cheung&email=jcheung8@live.unc.edu HTTP/1.1\nHost: localhost:8080\nAccept: */*");
-  //parse_request("POST / HTTP/1.1\nHose: localhost:8080\nAccept: */*\nContent-Length: 43\nContent-Type: application/x-www-form-urlencoded\n\nfirst=joseph&last=cheung&email=jcheung8@live.unc.edu");
+  //parse_request("POST / HTTP/1.1\nHost: localhost:8080\nAccept: */*\nContent-Length: 43\nContent-Type: application/x-www-form-urlencoded\n\nfirst=joseph&last=cheung&email=jcheung8@live.unc.edu");
   //return 0;
 //}
 int parse_request( char* http_request ) {
@@ -308,6 +308,8 @@ int parse_request( char* http_request ) {
   // GET Request
   if (return_value == 0) {
     if (strlen(http_request) == 0) {
+      request_keys = NULL;
+      request_values = NULL;
       return return_value;
     }
     for (int i = 0; i < strlen(http_request) - 6; i++) {
@@ -342,12 +344,20 @@ int parse_request( char* http_request ) {
   }
 
   //POST Request
+  int index = 0;
   if (return_value == 1) {
     if (strlen(http_request) == 0) {
+      request_keys = NULL;
+      request_values = NULL;
       return return_value;
     }
-    for (int i = 0; i < strlen(http_request) - 117; i++) {
-        character = http_request[i + 117];
+    for (int p = 0; p < strlen(http_request); p++) {
+      if (http_request[p] == '\n' && http_request[p+1] == '\n') {
+        index = p + 2;
+      }
+    }
+    for (int i = 0; i < strlen(http_request) - index; i++) {
+        character = http_request[i + index];
         if (character == ' ') {
           break;
         } else if (character == '\n') {
@@ -376,7 +386,6 @@ int parse_request( char* http_request ) {
         }
     }
   }
-
   /*printf("request keys:\n");
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_keys[i]);
@@ -385,7 +394,7 @@ int parse_request( char* http_request ) {
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_values[i]);
   }*/
-  //unallocate_data_arrays();
+
   return return_value;
 
 } // end parse_request() function
