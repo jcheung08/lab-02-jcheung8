@@ -312,7 +312,7 @@ int parse_request( char* http_request ) {
 
   // GET Request
   if (return_value == 0) {
-    if (strlen(http_request) < 4) {
+    if (strlen(http_request) < 8) {
       request_keys[0] = "\0";
       request_values[0] = "\0";
     }
@@ -359,9 +359,8 @@ int parse_request( char* http_request ) {
         }
   }
   if (return_value == 1) {
-    if (strlen(http_request) < 5) {
-      request_keys[0] = "\0";
-      request_values[0] = "\0";
+    if (strlen(http_request) < 30) {
+      return 1;
     }
     for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
         character = http_request[i + twoPairs];
