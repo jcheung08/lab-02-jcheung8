@@ -303,6 +303,18 @@ int main() {
 
 int parse_request( char* http_request ) {
   int return_value = -1;
+  if (strlen(http_request) == 0) {
+    return -1;
+  } else {
+    for (int i = 0; i < strlen(http_request); i++) {
+      if (http_request[i] == '&') {
+        number_key_value_pairs++;
+      }
+    }
+    number_key_value_pairs++;
+  }
+
+
   char character;
   if (http_request[0] == 'G') {
     return_value = 0;
@@ -314,34 +326,40 @@ int parse_request( char* http_request ) {
   int r2 = 0;
   int c2 = 0;
   int boo = 1;
+
   // GET Request
   if (return_value == 0) {
-    for (int i = 0; i < strlen(http_request); i++) {
+    for (int i = 0; i < strlen(http_request) - 4; i++) {
         character = http_request[i + 4];
-        if ((character != '=' || character != '&') && boo) {
-          request_keys[r1][c1] = character;
-          c1++;
-        } else if ((character == '=' || character == '&') && boo) {
-          r1++;
-          c1 = 0;
-          if (boo) { boo = 1;} else {boo = 0;}
+        if (boo) {
+          if (character != '=' && character != '&')  {
+            request_keys[r1][c1] = character;
+            c1++;
+          } else if (character == '=' || character == '&') {
+            r1++;
+            c1 = 0;
+            boo = 0;
+          }
         } else {
-           if (character != '=' || character != '&') {
-             request_values[r2][c2] = character;
-             c2++;
-           } else if (character == '=' || character == '&') {
-             r2++;
-             c2 = 0;
-             if (boo) { boo = 1;} else {boo = 0;}
-           }
+          if (character != '=' && character != '&') {
+            request_values[r2][c2] = character;
+            c2++;
+          } else if (character == '=' || character == '&') {
+            r2++;
+            c2 = 0;
+            boo = 1;
+          }
         }
     }
   }
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 100; j++) {
-      printf("%c", request_keys[i][j]);
-    }
+  /*printf("request keys:\n");
+  for (int i = 0; i < number_key_value_pairs; i++) {
+    printf("%s\n", request_keys[i]);
   }
+  printf("request values:\n");
+  for (int i = 0; i < number_key_value_pairs; i++) {
+    printf("%s\n", request_values[i]);
+  }*/
 
   return return_value;
 
