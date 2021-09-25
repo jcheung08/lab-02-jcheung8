@@ -165,23 +165,16 @@ int run_server( unsigned int port_number ) {
       // Modify code to fork a child process
       // in which accept_client() gets called
       // -------------------------------------
-      if (client_socket_fd >= 0 ) {
-        int childProcess = fork();
-        if (childProcess < 0) {
-          //creation of child process unsuccessful
-          exit(1);
-        } else if (childProcess == 0) {
-          //child process
-          accept_client(client_socket_fd);
-          exit(0);
-        } else {
-          //parent process
-          initialize_handler();
-        }
+      int childProcess = fork();
+      if (childProcess < 0) {
+        //creation of child process unsuccessful
+        return 1;
+      } else if (childProcess == 0 && client_socket_fd >= 0) {
+        //child process
+        accept_client(client_socket_fd);
+        return 0;;
       }
-
     }
-
   }
 
   return OK;
@@ -347,46 +340,6 @@ int parse_request( char* http_request ) {
     }
   }
 
-  //POST Request
-  int index = 0;
-  for (int t = 0; t < strlen(http_request); t++) {
-    if (http_request[t] == 'c') {
-      index = t;
-      break;
-    }
-  }
-  if (return_value == 1) {
-    for (int i = 0; i < strlen(http_request) - index; i++) {
-        character = http_request[i + index];
-        if (character == ' ') {
-          break;
-        } else if (character == '\n') {
-          break;
-        } else if (character == '\r') {
-          break;
-        }
-        if (boo) {
-          if (character != '=' && character != '&')  {
-            request_keys[r1][c1] = character;
-            c1++;
-          } else if (character == '=' || character == '&') {
-            r1++;
-            c1 = 0;
-            boo = 0;
-          }
-        } else {
-          if (character != '=' && character != '&') {
-            request_values[r2][c2] = character;
-            c2++;
-          } else if (character == '=' || character == '&') {
-            r2++;
-            c2 = 0;
-            boo = 1;
-          }
-        }
-    }
-  }
-
   /*printf("request keys:\n");
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_keys[i]);
@@ -395,7 +348,7 @@ int parse_request( char* http_request ) {
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_values[i]);
   }*/
-  unallocate_data_arrays();
+  //unallocate_data_arrays();
   return return_value;
 
 } // end parse_request() function
