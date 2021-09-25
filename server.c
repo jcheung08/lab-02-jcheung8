@@ -279,22 +279,20 @@ void accept_client( int client_socket_fd ) {
 //
 //int main() {
   //parse_request("GET /?first=joseph&last=cheung&email=jcheung8@live.unc.edu HTTP/1.1\nHost: localhost:8080\nAccept: */*");
-  //parse_request("POST course=comp530&instructor=brent");
+  //parse_request("POST / HTTP/1.1\nHose: localhost:8080\nAccept: */*\nContent-Length: 43\nContent-Type: application/x-www-form-urlencoded\n\nfirst=joseph&last=cheung&email=jcheung8@live.unc.edu");
   //return 0;
 //}
 int parse_request( char* http_request ) {
   allocate_data_arrays();
   int return_value = -1;
-  if (strlen(http_request) == 0) {
-    return -1;
-  } else {
-    for (int i = 0; i < strlen(http_request); i++) {
-      if (http_request[i] == '&') {
-        number_key_value_pairs++;
-      }
+
+  for (int i = 0; i < strlen(http_request); i++) {
+    if (http_request[i] == '&') {
+      number_key_value_pairs++;
     }
-    number_key_value_pairs++;
   }
+  number_key_value_pairs++;
+
   char character;
   if (http_request[0] == 'G' || http_request[0] == 'g') {
     return_value = 0;
@@ -309,8 +307,47 @@ int parse_request( char* http_request ) {
 
   // GET Request
   if (return_value == 0) {
+    if (strlen(http_request) == 0) {
+      return return_value;
+    }
     for (int i = 0; i < strlen(http_request) - 6; i++) {
         character = http_request[i + 6];
+        if (character == ' ') {
+          break;
+        } else if (character == '\n') {
+          break;
+        } else if (character == '\r') {
+          break;
+        }
+        if (boo) {
+          if (character != '=' && character != '&')  {
+            request_keys[r1][c1] = character;
+            c1++;
+          } else if (character == '=' || character == '&') {
+            r1++;
+            c1 = 0;
+            boo = 0;
+          }
+        } else {
+          if (character != '=' && character != '&') {
+            request_values[r2][c2] = character;
+            c2++;
+          } else if (character == '=' || character == '&') {
+            r2++;
+            c2 = 0;
+            boo = 1;
+          }
+        }
+    }
+  }
+
+  //POST Request
+  if (return_value == 1) {
+    if (strlen(http_request) == 0) {
+      return return_value;
+    }
+    for (int i = 0; i < strlen(http_request) - 117; i++) {
+        character = http_request[i + 117];
         if (character == ' ') {
           break;
         } else if (character == '\n') {
