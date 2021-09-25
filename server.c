@@ -279,7 +279,7 @@ void accept_client( int client_socket_fd ) {
 //
 //int main() {
   //parse_request("GET /?first=joseph&last=cheung&email=jcheung8@live.unc.edu HTTP/1.1\nHost: localhost:8080\nAccept: */*");
-  //parse_request("POST / HTTP/1.1\nHost: localhost:8080\nAccept: */*\nContent-Length: 43\nContent-Type: application/x-www-form-urlencoded\n\nfirst=joseph&last=cheung&email=jcheung8@live.unc.edu");
+  //parse_request("POST / HTTP/1.1\nHost: localhost:8080\nAccept: */*\nContent-Length: 43\nContent-Type: application/x-www-form-urlencoded\r\n\r\nfirst=joseph&last=cheung&email=jcheung8@live.unc.edu");
   //return 0;
 //}
 int parse_request( char* http_request ) {
@@ -308,8 +308,8 @@ int parse_request( char* http_request ) {
 
   // GET Request
   if (return_value == 0) {
-    for (int i = 0; i < strlen(http_request) - 4; i++) {
-        character = http_request[i + 4];
+    for (int i = 0; i < strlen(http_request) - 6; i++) {
+        character = http_request[i + 6];
         if (character == ' ') {
           break;
         } else if (character == '\n') {
@@ -340,10 +340,18 @@ int parse_request( char* http_request ) {
   }
 
   //POST Request
+  int twoPairs = 0;
+  for (int i = 0; i < strlen(http_request) - 4; i++) {
+    if (http_request[i] == '\r' && http_request[i+1] == '\n' &&
+        http_request[i+2] == '\r' && http_request[i+3] == '\n') {
+          twoPairs = i + 4;
+          break;
+        }
+  }
 
   if (return_value == 1) {
-    for (int i = 0; i < strlen(http_request) - 116; i++) {
-        character = http_request[i + 116];
+    for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
+        character = http_request[i + twoPairs];
         if (character == ' ') {
           break;
         } else if (character == '\n') {
