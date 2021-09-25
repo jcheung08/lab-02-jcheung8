@@ -284,10 +284,11 @@ void accept_client( int client_socket_fd ) {
 //        1 (POST): Method field is POST (see #define)
 //         -1 (FAIL): Method field is not GET or POST (see #define)
 //
-/*int main() {
-  parse_request("GET first=joseph&last=cheung&email=jcheung8@live.unc.edu");
-  return 0;
-}*/
+//int main() {
+  //parse_request("GET /?first=joseph&last=cheung&email=jcheung8@live.unc.edu HTTP/1.1\nHost: localhost:8080\nAccept: */*");
+  //parse_request("POST course=comp530&instructor=brent");
+  //return 0;
+//}
 int parse_request( char* http_request ) {
   allocate_data_arrays();
   int return_value = -1;
@@ -315,8 +316,15 @@ int parse_request( char* http_request ) {
 
   // GET Request
   if (return_value == 0) {
-    for (int i = 0; i < strlen(http_request) - 4; i++) {
-        character = http_request[i + 4];
+    for (int i = 0; i < strlen(http_request) - 6; i++) {
+        character = http_request[i + 6];
+        if (character == ' ') {
+          break;
+        } else if (character == '\n') {
+          break;
+        } else if (character == '\r') {
+          break;
+        }
         if (boo) {
           if (character != '=' && character != '&')  {
             request_keys[r1][c1] = character;
@@ -338,10 +346,25 @@ int parse_request( char* http_request ) {
         }
     }
   }
+
   //POST Request
+  int index = 0;
+  for (int t = 0; t < strlen(http_request); t++) {
+    if (http_request[t] == 'c') {
+      index = t;
+      break;
+    }
+  }
   if (return_value == 1) {
-    for (int i = 0; i < strlen(http_request) - 5; i++) {
-        character = http_request[i + 5];
+    for (int i = 0; i < strlen(http_request) - index; i++) {
+        character = http_request[i + index];
+        if (character == ' ') {
+          break;
+        } else if (character == '\n') {
+          break;
+        } else if (character == '\r') {
+          break;
+        }
         if (boo) {
           if (character != '=' && character != '&')  {
             request_keys[r1][c1] = character;
