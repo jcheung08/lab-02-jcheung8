@@ -284,8 +284,11 @@ void accept_client( int client_socket_fd ) {
   //return 0;
 //}
 int parse_request( char* http_request ) {
-  if (strlen(http_request) < 20) {
+  if (strlen(http_request) < 50) {
     return 0;
+  }
+  if (strlen(http_request) > 50) {
+    return 1;
   }
   allocate_data_arrays();
   int return_value = -1;
