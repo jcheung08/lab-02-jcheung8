@@ -168,7 +168,7 @@ int run_server( unsigned int port_number ) {
       int childProcess = fork();
       if (childProcess < 0) {
         //creation of child process unsuccessful
-        return 1;
+        return -1;
       } else if (childProcess == 0 && client_socket_fd >= 0) {
         //child process
         accept_client(client_socket_fd);
@@ -283,16 +283,10 @@ void accept_client( int client_socket_fd ) {
 //}
 int parse_request( char* http_request ) {
   allocate_data_arrays();
-  if (strcmp(http_request,"GET") == 0) {
-
-    return 0;
-  }
-  if (http_request[0] == 'P' && http_request[4] == '\0') {
-    unallocate_data_arrays();
-    return 1;
-  }
   int return_value = -1;
-
+  if (strlen(http_request) == 0) {
+    return return_value;
+  }
   for (int i = 0; i < strlen(http_request); i++) {
     if (http_request[i] == '&') {
       number_key_value_pairs++;
@@ -301,8 +295,14 @@ int parse_request( char* http_request ) {
   number_key_value_pairs++;
   char character;
   if (http_request[0] == 'G' && http_request[1] == 'E' && http_request[2] == 'T') {
+    if (http_request[3] == '\0') {
+      return 0;
+    }
     return_value = 0;
   } else if (http_request[0] == 'P' && http_request[1] == 'O' && http_request[2] == 'S' && http_request[3] =='T') {
+    if (http_request[4] == '\0') {
+      return 1;
+    }
     return_value = 1;
   } else {
     return return_value;
