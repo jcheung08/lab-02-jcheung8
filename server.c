@@ -311,8 +311,8 @@ int parse_request( char* http_request ) {
 
   // GET Request
   if (return_value == 0) {
-    for (int i = 3; i < 8; i++) {
-      if (http_request[i] == '\0') {
+    for (int i = 4; i < 8; i++) {
+      if (http_request[i] == ' ') {
         return 0;
       }
     }
@@ -348,7 +348,9 @@ int parse_request( char* http_request ) {
   }
 
   //POST Request
-
+  if (strcmp(http_request, "POST") == 0) {
+    return 1;
+  }
   if (return_value == 1) {
     int twoPairs = 0;
     for (int i = 0; i < strlen(http_request) - 4; i++) {
@@ -357,9 +359,6 @@ int parse_request( char* http_request ) {
             twoPairs = i + 4;
             break;
           }
-    }
-    if (twoPairs == 0) {
-      return 1;
     }
     for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
         character = http_request[i + twoPairs];
