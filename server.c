@@ -278,8 +278,11 @@ void accept_client( int client_socket_fd ) {
 //         -1 (FAIL): Method field is not GET or POST (see #define)
 //
 int parse_request( char* http_request ) {
-  if (strlen(http_request) == 0) {
-     return 1;
+  if (strlen(http_request) == 3 || strlen(http_request) == 4) {
+     return 0;
+  }
+  if (strlen(http_request) == 5 || strlen(http_request) == 6) {
+    return 1;
   }
   allocate_data_arrays();
   int return_value = -1;
