@@ -278,7 +278,6 @@ void accept_client( int client_socket_fd ) {
 //         -1 (FAIL): Method field is not GET or POST (see #define)
 //
 int parse_request( char* http_request ) {
-  printf("http: %s\n", http_request);
   allocate_data_arrays();
   int return_value = -1;
 
