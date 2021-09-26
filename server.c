@@ -285,14 +285,13 @@ int parse_request( char* http_request ) {
      return -1;
   }
   //empty string edge case
-  if (strlen(http_request) == 3 || strlen(http_request) == 4) {
-    if (strlen(http_request) == 3 && http_request[0] == 'G') {
-      request_keys[0] = "\0";
-      request_values[0] = "\0";
-      return 0;
-    } else if (strlen(http_request) == 4 && http_request[0] == 'P') {
-      unallocate_data_arrays();
-      return 1;
+  for (int i = 0; i < 6; i++) {
+    if (http_request[i] == '\0') {
+      if (http_request[0] == 'G') {
+        return 0;
+      } else {
+        return 1;
+      }
     }
   }
   for (int i = 0; i < strlen(http_request); i++) {
