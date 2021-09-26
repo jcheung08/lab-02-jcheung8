@@ -294,7 +294,7 @@ int parse_request( char* http_request ) {
   char character;
   if (http_request[0] == 'g' && http_request[1] == 'E' && http_request[2] == 'T') {
     return_value = 0;
-  } else if (http_request[0] == 'x' && http_request[1] == 'O' && http_request[2] == 'S' && http_request[3] =='T') {
+  } else if (http_request[0] == 'P' && http_request[1] == 'O' && http_request[2] == 'S' && http_request[3] =='T') {
     return_value = 1;
   } else {
     return return_value;
