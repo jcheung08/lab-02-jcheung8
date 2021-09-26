@@ -284,6 +284,17 @@ int parse_request( char* http_request ) {
   if (strlen(http_request) == 0) {
      return -1;
   }
+  //empty string edge case
+  if (strlen(http_request) == 3 || strlen(http_request) == 4) {
+    if (strlen(http_request) == 3 && http_request[0] == 'G') {
+      request_keys[0] = "\0";
+      request_values[0] = "\0";
+      return 0;
+    } else if (strlen(http_request) == 4 && http_request[0] == 'P') {
+      unallocate_data_arrays();
+      return 1;
+    }
+  }
   for (int i = 0; i < strlen(http_request); i++) {
     if (http_request[i] == '&') {
       number_key_value_pairs++;
@@ -307,11 +318,6 @@ int parse_request( char* http_request ) {
 
   // GET Request
   if (return_value == 0) {
-    if (http_request[5] == '\0' || http_request[6] == '\0' || http_request[7] == '\0') {
-      request_keys[0] = "\0";
-      request_values[0] = "\0";
-      return 0;
-    }
     for (int i = 0; i < strlen(http_request) - 6; i++) {
         character = http_request[i + 6];
         if (character == ' ') {
@@ -354,11 +360,7 @@ int parse_request( char* http_request ) {
           break;
         }
   }
-  if (http_request[twoPairs] == '\0') {
-    request_keys[0][0] = '\0';
-    request_values[0][0] = '\0';
-    return 1;
-  }
+
   if (return_value == 1) {
     for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
         character = http_request[i + twoPairs];
