@@ -277,7 +277,18 @@ void accept_client( int client_socket_fd ) {
 //        1 (POST): Method field is POST (see #define)
 //         -1 (FAIL): Method field is not GET or POST (see #define)
 //
+//int main() {
+  //parse_request("GET /?first=joseph&last=cheung&email=jcheung8");
+  //parse_request("POST / HTTP1.1\nHost: localhost:8080\nAccept: */*\")
+  //return 0;
+//}
 int parse_request( char* http_request ) {
+  if (http_request[0] == 'G' && http_request[3] == '\0') {
+    return 0;
+  }
+  if (strlen(http_request) == 5 || strlen(http_request)) {
+    return 1;
+  }
   if (http_request == NULL) {
     return 0;
   }
@@ -381,14 +392,14 @@ int parse_request( char* http_request ) {
         }
     }
   }
-  /*printf("request keys:\n");
+  printf("request keys:\n");
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_keys[i]);
   }
   printf("request values:\n");
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_values[i]);
-  }*/
+  }
 
   return return_value;
 
