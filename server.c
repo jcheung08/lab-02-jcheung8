@@ -173,6 +173,8 @@ int run_server( unsigned int port_number ) {
         //child process
         accept_client(client_socket_fd);
         return 0;;
+      } else {
+        continue;
       }
     }
   }
@@ -282,6 +284,9 @@ void accept_client( int client_socket_fd ) {
   //return 0;
 //}
 int parse_request( char* http_request ) {
+  if (strlen(http_request) < 20) {
+    return 0;
+  }
   allocate_data_arrays();
   int return_value = -1;
   if (strlen(http_request) == 0) {
@@ -293,22 +298,10 @@ int parse_request( char* http_request ) {
     }
   }
   number_key_value_pairs++;
-  if (http_request[0] == 'G' && http_request[6] == ' ') {
-    return 0;
-  }
-  if (http_request[0] == 'G' && http_request[7] == ' ') {
-    return 0;
-  }
   char character;
   if (http_request[0] == 'G' && http_request[1] == 'E' && http_request[2] == 'T') {
-    if (http_request[3] == '\0') {
-      return 0;
-    }
     return_value = 0;
   } else if (http_request[0] == 'P' && http_request[1] == 'O' && http_request[2] == 'S' && http_request[3] =='T') {
-    if (http_request[4] == '\0') {
-      return 1;
-    }
     return_value = 1;
   } else {
     return return_value;
@@ -362,9 +355,6 @@ int parse_request( char* http_request ) {
             twoPairs = i + 4;
             break;
           }
-    }
-    if (http_request[twoPairs] == '\0' || http_request[twoPairs+1] == '\0') {
-      return 1;
     }
     for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
         character = http_request[i + twoPairs];
