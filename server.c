@@ -286,7 +286,7 @@ int parse_request( char* http_request ) {
   if (http_request[0] == 'G' && http_request[3] == '\0') {
     return 0;
   }
-  if (strlen(http_request) == 5 || strlen(http_request)) {
+  if (strlen(http_request) == 5 || strlen(http_request) == 6) {
     return 1;
   }
   if (http_request == NULL) {
