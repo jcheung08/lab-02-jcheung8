@@ -278,18 +278,12 @@ void accept_client( int client_socket_fd ) {
 //         -1 (FAIL): Method field is not GET or POST (see #define)
 //
 int parse_request( char* http_request ) {
-  if (http_request[0] == 'G' && http_request[1] == 'E' && http_request[2] == 'T' && http_request[3] == '\0') {
-    return 0;
-  }
-  if (http_request[0] == 'P' && http_request[1] == 'O' && http_request[2] == 'S' && http_request[3] =='T' && http_request[4] == ' ') {
-    return 1;
+  if (strlen(http_request) == 0) {
+     return 1;
   }
   allocate_data_arrays();
   int return_value = -1;
 
-  if (strlen(http_request) == 0) {
-     return -1;
-  }
   for (int i = 0; i < strlen(http_request); i++) {
     if (http_request[i] == '&') {
       number_key_value_pairs++;
