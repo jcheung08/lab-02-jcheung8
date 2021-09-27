@@ -309,7 +309,9 @@ int parse_request( char* http_request ) {
   int r2 = 0;
   int c2 = 0;
   int boo = 1;
-
+  if (strchr(http_request, '=') == NULL && http_request[0] == 'G') {
+    return 1;
+  }
   // GET Request
   if (return_value == 0) {
     //parse through http request character by character
@@ -343,16 +345,11 @@ int parse_request( char* http_request ) {
         }
     }
   }
-  //EDGE case for POST by content length
-  if (return_value == 1) {
-    for (int i = 0; i < strlen(http_request) - 4; i++) {
-      if (http_request[i] == 'L' && http_request[i + 6] == ':') {
-        if (http_request[i+7] == '0' || http_request[i+9] == '0') {
-          return 1;
-        }
-      }
-    }
+  //EDGE case for POST by equal sign
+  if (strchr(http_request, '=') == NULL && http_request[0] == 'P') {
+    return 1;
   }
+
   //POST Request
   if (return_value == 1) {
     int twoPairs = 0;
