@@ -288,12 +288,18 @@ int parse_request( char* http_request ) {
   int return_value = -1;
 
   //updating number of key value pairs
-  /*for (int i = 0; i < strlen(http_request); i++) {
+  for (int i = 0; i < strlen(http_request); i++) {
     if (http_request[i] == '&') {
       number_key_value_pairs++;
     }
   }
-  number_key_value_pairs++;*/
+  number_key_value_pairs++;
+  if (number_key_value_pairs == 1 && http_request[0] == 'G') {
+    return 0;
+  }
+  if (number_key_value_pairs == 1 && http_request[0] == 'P') {
+    return 1;
+  }
 
   // GET or POST
   char character;
