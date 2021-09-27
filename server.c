@@ -281,7 +281,7 @@ void accept_client( int client_socket_fd ) {
 //
 //int main() {
   //parse_request("POST / HTTP/1.1\nHost: localhost:8080\nAccept: */*\nContent-Length: 43\nContent-Type: application/x-www-form-urlencoded\r\n\r\nfirst=joseph&last=cheung&email=jcheung8@live.unc.edu");
-  //return 0;
+//  return 0;
 //}
 int parse_request( char* http_request ) {
   allocate_data_arrays();
@@ -346,8 +346,16 @@ int parse_request( char* http_request ) {
     }
   }
   //EDGE case for POST by equal sign
-  if (strchr(http_request, '=') == NULL && http_request[0] == 'P') {
-    return 1;
+  if (return_value == 1) {
+    for (int i = 0; i < strlen(http_request); i++) {
+      if (http_request[i] == '=') {
+        break;
+      } else {
+        if (i == strlen(http_request) - 1) {
+          return 1;
+        }
+      }
+    }
   }
 
   //POST Request
