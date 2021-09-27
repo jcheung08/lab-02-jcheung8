@@ -120,9 +120,9 @@ void sig_child_handler( int signal_type ) {
   // to remove child process from process
   // table (i.e. reap the child)
   // -------------------------------------
-  if (signal_type == SIGCHLD) {
-    wait(NULL);
-  }
+  /*if (signal_type == SIGCHLD) {
+    waitpid(-1,NULL,0);
+  }*/
 
 } // end sig_child_handler() function
 
