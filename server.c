@@ -120,9 +120,9 @@ void sig_child_handler( int signal_type ) {
   // to remove child process from process
   // table (i.e. reap the child)
   // -------------------------------------
-  /*if (signal_type == SIGCHLD) {
+  if (signal_type == SIGCHLD) {
     waitpid(-1,NULL,0);
-  }*/
+  }
 
 } // end sig_child_handler() function
 
@@ -286,13 +286,6 @@ void accept_client( int client_socket_fd ) {
 //}
 int parse_request( char* http_request ) {
   allocate_data_arrays();
-  if (http_request[0] == 'G' && http_request[3] == '\0'){
-    return 0;
-  }
-  if (http_request[0] == 'P' && http_request[4] == '\0') {
-    unallocate_data_arrays();
-    return 1;
-  }
   int return_value = -1;
   if (strlen(http_request) == 0) {
     return return_value;
@@ -390,14 +383,14 @@ int parse_request( char* http_request ) {
         }
     }
   }
-  /*printf("request keys:\n");
+  printf("request keys:\n");
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_keys[i]);
   }
   printf("request values:\n");
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_values[i]);
-  }*/
+  }
 
   return return_value;
 
