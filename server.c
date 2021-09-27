@@ -288,12 +288,12 @@ int parse_request( char* http_request ) {
   int return_value = -1;
 
   //updating number of key value pairs
-  for (int i = 0; i < strlen(http_request); i++) {
+  /*for (int i = 0; i < strlen(http_request); i++) {
     if (http_request[i] == '&') {
       number_key_value_pairs++;
     }
   }
-  number_key_value_pairs++;
+  number_key_value_pairs++;*/
 
   // GET or POST
   char character;
@@ -320,10 +320,6 @@ int parse_request( char* http_request ) {
         if (character == ' ') {
           break;
         }
-        if (character == '\0') {
-          //unallocate_data_arrays();
-          return 0;
-        }
         if (boo) {
           if (character != '=' && character != '&')  {
             request_keys[r1][c1] = character;
@@ -343,18 +339,6 @@ int parse_request( char* http_request ) {
             boo = 1;
           }
         }
-    }
-  }
-  //EDGE case for POST by equal sign
-  if (return_value == 1) {
-    for (int i = 0; i < strlen(http_request); i++) {
-      if (http_request[i] == '=') {
-        break;
-      } else {
-        if (i == strlen(http_request) - 1) {
-          return 1;
-        }
-      }
     }
   }
 
