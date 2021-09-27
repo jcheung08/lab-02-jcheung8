@@ -285,8 +285,10 @@ void accept_client( int client_socket_fd ) {
   //return 0;
 //}
 int parse_request( char* http_request ) {
-  if (http_request[0] == 'G' && http_request[3] == ' ' && http_request[4] == ' ') {
-    return 0;
+  for (int i = 0; i < strlen(http_request); i++) {
+    if (http_request[i] == ' ' && http_request[i+1] == ' ') {
+      return 0;
+    }
   }
 
   allocate_data_arrays();
@@ -357,8 +359,9 @@ int parse_request( char* http_request ) {
             break;
           }
     }
-    if (http_request[twoPairs] == ' ' && http_request[twoPairs] == ' ') {
-      return 1;
+    if ((http_request[twoPairs] == ' ' && http_request[twoPairs + 1] == ' ') || (http_request[twoPairs] == '\0' && http_request[twoPairs + 1] == '\0')) {
+       unallocate_data_arrays();
+       return 1;
     }
     for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
         character = http_request[i + twoPairs];
