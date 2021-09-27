@@ -281,9 +281,14 @@ void accept_client( int client_socket_fd ) {
 //
 //int main() {
   //parse_request("GET /?first=joseph&last=cheung&email=jcheung8@live.unc.edu");
+  //parse_request("GET                                                 ");
   //return 0;
 //}
 int parse_request( char* http_request ) {
+  if (http_request[0] == 'G' && http_request[3] == ' ' && http_request[4] == ' ') {
+    return 0;
+  }
+
   allocate_data_arrays();
   int return_value = -1;
   if (strlen(http_request) == 0) {
@@ -311,11 +316,6 @@ int parse_request( char* http_request ) {
 
   // GET Request
   if (return_value == 0) {
-    for (int i = 4; i < 8; i++) {
-      if (http_request[i] == ' ') {
-        return 0;
-      }
-    }
     for (int i = 0; i < strlen(http_request) - 6; i++) {
         character = http_request[i + 6];
         if (character == ' ') {
@@ -348,9 +348,6 @@ int parse_request( char* http_request ) {
   }
 
   //POST Request
-  if (strcmp(http_request, "POST") == 0) {
-    return 1;
-  }
   if (return_value == 1) {
     int twoPairs = 0;
     for (int i = 0; i < strlen(http_request) - 4; i++) {
@@ -359,6 +356,9 @@ int parse_request( char* http_request ) {
             twoPairs = i + 4;
             break;
           }
+    }
+    if (http_request[twoPairs] == ' ' && http_request[twoPairs] == ' ') {
+      return 1;
     }
     for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
         character = http_request[i + twoPairs];
