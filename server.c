@@ -285,6 +285,12 @@ void accept_client( int client_socket_fd ) {
   //return 0;
 //}
 int parse_request( char* http_request ) {
+  if (http_request[0] == 'G' && http_request[4] == '\0') {
+    return 0;
+  }
+  if (http_request[0] == 'P' && http_request[5] == '\0') {
+    return 1;
+  }
   allocate_data_arrays();
   int return_value = -1;
   if (strlen(http_request) == 0) {
