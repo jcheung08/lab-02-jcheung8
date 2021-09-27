@@ -347,7 +347,7 @@ int parse_request( char* http_request ) {
   if (return_value == 1) {
     for (int i = 0; i < strlen(http_request) - 4; i++) {
       if (http_request[i] == 'L' && http_request[i + 6] == ':') {
-        if (http_request[i+8] == '0') {
+        if (http_request[i+7] == '0' || http_request[i+9] == '0') {
           return 1;
         }
       }
