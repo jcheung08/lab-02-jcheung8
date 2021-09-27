@@ -322,10 +322,6 @@ int parse_request( char* http_request ) {
         character = http_request[i + 6];
         if (character == ' ') {
           break;
-        } else if (character == '\n') {
-          break;
-        } else if (character == '\r') {
-          break;
         }
         if (boo) {
           if (character != '=' && character != '&')  {
@@ -363,10 +359,6 @@ int parse_request( char* http_request ) {
         character = http_request[i + twoPairs];
         if (character == ' ') {
           break;
-        } else if (character == '\n') {
-          break;
-        } else if (character == '\r') {
-          break;
         }
         if (boo) {
           if (character != '=' && character != '&')  {
@@ -389,14 +381,14 @@ int parse_request( char* http_request ) {
         }
     }
   }
-  printf("request keys:\n");
+  /*printf("request keys:\n");
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_keys[i]);
   }
   printf("request values:\n");
   for (int i = 0; i < number_key_value_pairs; i++) {
     printf("%s\n", request_values[i]);
-  }
+  }*/
 
   return return_value;
 
