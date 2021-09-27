@@ -280,8 +280,7 @@ void accept_client( int client_socket_fd ) {
 //         -1 (FAIL): Method field is not GET or POST (see #define)
 //
 //int main() {
-  //parse_request("GET /?first=joseph&last=cheung&email=jcheung8@live.unc.edu");
-  //parse_request("GET                                                 ");
+  //parse_request("POST / HTTP/1.1\nHost: localhost:8080\nAccept: */*\nContent-Length: 43\nContent-Type: application/x-www-form-urlencoded\r\n\r\nfirst=joseph&last=cheung&email=jcheung8@live.unc.edu");
   //return 0;
 //}
 int parse_request( char* http_request ) {
@@ -344,7 +343,16 @@ int parse_request( char* http_request ) {
         }
     }
   }
-
+  //EDGE case for POST by content length
+  if (return_value == 1) {
+    for (int i = 0; i < strlen(http_request) - 4; i++) {
+      if (http_request[i] == 'L' && http_request[i + 6] == ':') {
+        if (http_request[i+8] == '0') {
+          return 1;
+        }
+      }
+    }
+  }
   //POST Request
   if (return_value == 1) {
     int twoPairs = 0;
