@@ -294,12 +294,6 @@ int parse_request( char* http_request ) {
     }
   }
   number_key_value_pairs++;
-  if (number_key_value_pairs == 1 && http_request[0] == 'G') {
-    return 0;
-  }
-  if (number_key_value_pairs == 1 && http_request[0] == 'P') {
-    return 1;
-  }
 
   // GET or POST
   char character;
@@ -315,14 +309,15 @@ int parse_request( char* http_request ) {
   int r2 = 0;
   int c2 = 0;
   int boo = 1;
-  if (strchr(http_request, '=') == NULL && http_request[0] == 'G') {
-    return 1;
-  }
   // GET Request
   if (return_value == 0) {
     //parse through http request character by character
     for (int i = 0; i < strlen(http_request) - 6; i++) {
         character = http_request[i + 6];
+        if (character == '\0' && i == 0) {
+          unallocate_data_arrays();
+          return 0;
+        }
         if (character == ' ') {
           break;
         }
@@ -357,6 +352,10 @@ int parse_request( char* http_request ) {
             twoPairs = i + 4;
             break;
           }
+    }
+    if (http_request[twoPairs] == '\0') {
+      unallocate_data_arrays();
+      return 1;
     }
     for (int i = 0; i < strlen(http_request) - twoPairs; i++) {
         character = http_request[i + twoPairs];
